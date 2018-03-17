@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_number": "937587096872",
+    "firebase_url": "https://friendlyeatskotlin-95d7b.firebaseio.com",
+    "project_id": "friendlyeatskotlin-95d7b",
+    "storage_bucket": "friendlyeatskotlin-95d7b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:937587096872:android:c1f0f09aa42eba16",
+        "android_client_info": {
+          "package_name": "com.google.firebase.example.fireeats"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "937587096872-nmam2nj1i271uinhufmresttst9soikq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyArIhYVVOesAJq2BCJZTlNx8LnxOflaY50"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:937587096872:android:ba3e5c3bef3bca03",
+        "android_client_info": {
+          "package_name": "br.com.waltervjunior.easymed"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "937587096872-nmam2nj1i271uinhufmresttst9soikq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyArIhYVVOesAJq2BCJZTlNx8LnxOflaY50"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

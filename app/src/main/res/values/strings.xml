@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">EasyMed</string>
+
+    <string name="email">E-mail</string>
+    <string name="password">Senha</string>
+    <string name="login">Entrar</string>
+    <string name="register_account">Criar conta</string>
+    <string name="forget_password">Esqueceu a senha</string>
+
+    <string name="full_name">Nome Completo</string>
+    <string name="cell_phone">Celular</string>
+    <string name="date_of_birth">Data de Nascimento</string>
+    <string name="crm">CRM</string>
+    <string name="telephone">Telefone</string>
+    <string name="address">Endereço</string>
+    <string name="type_register">Selecione o tipo de cadastro</string>
+    <string name="doctor_register">Tipo de cadastro: Médico</string>
+    <string name="pacient_register">Tipo de cadastro: paciente</string>
+    <string name="doctor">Médico</string>
+    <string name="pacient">Paciente</string>
+
+    <string name="create_medical_appointment">Agendar Consulta</string>
+    <string name="view_medical_appointment">Minhas Consultas</string>
+    <string name="exit">Sair</string>
+</resources>
