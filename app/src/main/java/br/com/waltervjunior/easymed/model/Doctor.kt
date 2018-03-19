@@ -1,12 +1,17 @@
 package br.com.waltervjunior.easymed.model
 
+import br.com.waltervjunior.easymed.dao.FirebaseDB
+
 class Doctor (
+        var name : String,
+        var crm : String,
+        var address : String,
+        var phone : String,
         var cellphone : String,
         var email : String,
-        var password : String,
-        var crm : String,
-        var telephone : String,
-        var address : String
+        var specialist : String
         ){
-        var id : Int = -1
+        fun save(id : String){
+                FirebaseDB().addDoctor(this, id)
+        }
 }

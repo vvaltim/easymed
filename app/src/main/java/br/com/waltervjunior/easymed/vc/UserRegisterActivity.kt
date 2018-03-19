@@ -2,11 +2,12 @@ package br.com.waltervjunior.easymed.vc
 
 import android.app.Activity
 import android.content.ContentValues.TAG
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import br.com.waltervjunior.easymed.model.Doctor
-import br.com.waltervjunior.easymed.model.Pacient
+import br.com.waltervjunior.easymed.model.Patient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.gson.Gson
 import org.jetbrains.anko.doAsync
@@ -45,50 +46,71 @@ class UserRegisterActivity : Activity(){
             //validar as paradas aqui
             if(ui.userToggleButton.isChecked){
                 //paciente
-                val paciente = Pacient(
+                val paciente = Patient(
+                        name = ui.nameEditText.text.toString(),
                         cellphone = ui.cellPhoneEditText.text.toString(),
-                        birthDate = ui.dateOfBirthEditText.text.toString(),
+                        dateOfBirth = ui.dateOfBirthEditText.text.toString(),
                         email = ui.emailEditText.text.toString(),
-                        password = ui.passwordEditText.text.toString()
+                        gender = ui.genderEditText.text.toString()
                 )
                 Log.d("Paciente", Gson().toJson(paciente))
-                createUser(paciente.email, paciente.password)
+
+                doAsync {
+                    mAuth.createUserWithEmailAndPassword(paciente.email,  ui.passwordEditText.text.toString())
+                            .addOnCompleteListener(this@UserRegisterActivity) { task ->
+                                if (task.isSuccessful) {
+                                    // Se o login for efetuado com sucesso
+                                    val user = mAuth.currentUser
+                                    Log.d("Usuário logado", Gson().toJson(user?.uid))
+
+                                    //salvar os dados do usuário no firebase
+                                    paciente.save(user!!.uid)
+
+                                    //mandar o usuário pra tela principal
+                                    startActivity(Intent(this@UserRegisterActivity, MainActivity::class.java))
+                                } else {
+                                    // Se o login falhar, validar as exception
+                                    Log.d(TAG, "createUserWithEmail:failure", task.exception)
+                                    toast("Authentication failed.")
+                                }
+                            }
+                }
             }else{
                 //medico
                 val medico = Doctor(
                         cellphone = ui.cellPhoneEditText.text.toString(),
                         email = ui.emailEditText.text.toString(),
-                        password = ui.passwordEditText.text.toString(),
                         address = ui.addressEditText.text.toString(),
                         crm = ui.crmEditText.text.toString(),
-                        telephone = ui.telephoneEditText.text.toString()
+                        phone = ui.telephoneEditText.text.toString(),
+                        name = ui.nameEditText.text.toString(),
+                        specialist = ui.specialistEditText.text.toString()
                 )
                 Log.d("Médico", Gson().toJson(medico))
+
+                //region <! Criando a conta no firebase !>
+                doAsync {
+                    mAuth.createUserWithEmailAndPassword(medico.email,  ui.passwordEditText.text.toString())
+                            .addOnCompleteListener(this@UserRegisterActivity) { task ->
+                                if (task.isSuccessful) {
+                                    // Se o login for efetuado com sucesso
+                                    val user = mAuth.currentUser
+                                    Log.d("Usuário logado", Gson().toJson(user?.uid))
+
+                                    //salvar os dados do usuário no firebase
+                                    medico.save(user!!.uid)
+
+                                    //mandar o usuário pra tela principal
+                                    startActivity(Intent(this@UserRegisterActivity, MainActivity::class.java))
+                                } else {
+                                    // Se o login falhar, validar as exception
+                                    Log.d(TAG, "createUserWithEmail:failure", task.exception)
+                                    toast("Authentication failed.")
+                                }
+                            }
+                }
+                //endregion
             }
-            //val intent = Intent(this@UserRegisterActivity, MainActivity::class.java)
-            //startActivity(intent)
-        }
-    }
-
-    private fun createUser(email : String, password : String){
-        doAsync {
-            mAuth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(this@UserRegisterActivity) { task ->
-                        if (task.isSuccessful) {
-                            // Se o login for efetuado com sucesso
-                            val user = mAuth.currentUser
-                            Log.d("Usuário logado", Gson().toJson(user))
-
-                            //mandar o usuário pra tela principal
-                            //updateUI(user)
-                        } else {
-                            // Se o login falhar, validar as exception
-                            Log.d(TAG, "createUserWithEmail:failure", task.exception)
-                            toast("Authentication failed.")
-                        }
-
-                        // ...
-                    }
         }
     }
 }

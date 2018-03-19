@@ -15,9 +15,11 @@ class UserRegisterActivityUi : AnkoComponent<UserRegisterActivity>{
     lateinit var emailEditText: EditText
     lateinit var passwordEditText: EditText
     lateinit var dateOfBirthEditText: EditText
+    lateinit var genderEditText : EditText
     lateinit var crmEditText: EditText
     lateinit var telephoneEditText: EditText
     lateinit var addressEditText: EditText
+    lateinit var specialistEditText: EditText
     lateinit var createButton: Button
     lateinit var userToggleButton: ToggleButton
     lateinit var userContainer : LinearLayout
@@ -99,19 +101,23 @@ class UserRegisterActivityUi : AnkoComponent<UserRegisterActivity>{
 
                 pacientContainer = verticalLayout {
                     id = View.generateViewId()
+                    padding = dip(10)
                     visibility = View.GONE
 
                     dateOfBirthEditText = editText {
                         id = View.generateViewId()
                         hintResource = R.string.date_of_birth
                         inputType = InputType.TYPE_DATETIME_VARIATION_DATE
-                    }.lparams(matchParent) {
-                        marginStart = dip(10)
-                        marginEnd = dip(10)
-                    }
+                    }.lparams(matchParent)
+
+                    genderEditText = editText {
+                        id = View.generateViewId()
+                        hintResource = R.string.gender
+                    }.lparams(matchParent)
                 }.lparams(matchParent)
 
                 doctorContainer = verticalLayout {
+                    padding = dip(10)
                     id = View.generateViewId()
                     visibility = View.GONE
 
@@ -119,28 +125,24 @@ class UserRegisterActivityUi : AnkoComponent<UserRegisterActivity>{
                         id = View.generateViewId()
                         hintResource = R.string.crm
                         inputType = InputType.TYPE_CLASS_NUMBER
-                    }.lparams(matchParent) {
-                        marginStart = dip(10)
-                        marginEnd = dip(10)
-                    }
+                    }.lparams(matchParent)
 
                     telephoneEditText = editText {
                         id = View.generateViewId()
                         hintResource = R.string.telephone
                         inputType = InputType.TYPE_CLASS_PHONE
-                    }.lparams(matchParent) {
-                        marginStart = dip(10)
-                        marginEnd = dip(10)
-                    }
+                    }.lparams(matchParent)
 
                     addressEditText = editText {
                         id = View.generateViewId()
                         hintResource = R.string.address
                         inputType = InputType.TYPE_CLASS_TEXT
-                    }.lparams(matchParent) {
-                        marginStart = dip(10)
-                        marginEnd = dip(10)
-                    }
+                    }.lparams(matchParent)
+
+                    specialistEditText = editText{
+                        id = View.generateViewId()
+                        hintResource = R.string.specialist
+                    }.lparams(matchParent)
                 }.lparams(matchParent)
             }.lparams(matchParent){
                 below(userToggleButton)
