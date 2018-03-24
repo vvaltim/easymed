@@ -28,10 +28,7 @@ class UserRegisterActivity : Activity(){
         //instanciando o firebase
         mAuth = FirebaseAuth.getInstance()
 
-        ui.backButton.onClick {
-            onBackPressed()
-        }
-
+        //region <! Botão para alterar o tipo de conta criada !>
         ui.userToggleButton.setOnCheckedChangeListener({ _, state ->
             if (state){     //paciente
                 ui.pacientContainer.visibility = View.VISIBLE
@@ -41,7 +38,9 @@ class UserRegisterActivity : Activity(){
                 ui.doctorContainer.visibility = View.VISIBLE
             }
         })
+        //endregion
 
+        //region <! Botão de criar uma nova conta !>
         ui.createButton.onClick {
             //validar as paradas aqui
             if(ui.userToggleButton.isChecked){
@@ -112,5 +111,12 @@ class UserRegisterActivity : Activity(){
                 //endregion
             }
         }
+        //endregion
+
+        //region <! Ao pressionar o botão de voltar !>
+        ui.actionBar.backImageView.onClick {
+            onBackPressed()
+        }
+        //endregion
     }
 }

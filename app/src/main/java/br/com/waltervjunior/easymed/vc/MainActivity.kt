@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import br.com.waltervjunior.easymed.EasymedApplication
 import com.google.firebase.auth.FirebaseAuth
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.setContentView
@@ -17,6 +18,7 @@ class MainActivity : Activity(){
         //definindo a view
         ui = MainActivityUi()
         ui.setContentView(this)
+        EasymedApplication.activity = this
 
         ui.sairButton.onClick {
             //efetua logout do firebase

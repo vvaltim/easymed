@@ -25,12 +25,10 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    // Firestore
-    implementation 'com.google.firebase:firebase-firestore:11.8.0'
-
-    // Firebase Autenticação e Google Play service
-    implementation 'com.google.firebase:firebase-auth:11.8.0'
-    implementation 'com.google.android.gms:play-services-auth:11.8.0'
+    // Firebase
+    implementation "com.google.firebase:firebase-firestore:$firebase_version"
+    implementation "com.google.firebase:firebase-auth:$firebase_version"
+    implementation "com.google.android.gms:play-services-auth:$firebase_version"
 
     //kotlin
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
@@ -76,3 +74,8 @@ dependencies {
 }
 
 apply plugin: 'com.google.gms.google-services'
+kotlin {
+    experimental {
+        coroutines "enable"
+    }
+}
