@@ -13,6 +13,7 @@ import org.jetbrains.anko.*
 
 class MainActivityUi : AnkoComponent<MainActivity> {
     lateinit var actionBar : ActionBar
+    lateinit var createScheduleButton : Button
     lateinit var criarConsultaButton: Button
     lateinit var verConsultaButton: Button
     lateinit var sairButton: Button
@@ -23,13 +24,20 @@ class MainActivityUi : AnkoComponent<MainActivity> {
                 title.text = "EasyMed"
             }
 
+            createScheduleButton = button("Criar Agenda"){
+                generateViewId()
+                backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.colorPrimary))
+                textColor = Color.WHITE
+            }.lparams(matchParent){
+                below(actionBar)
+            }
 
             criarConsultaButton = button(R.string.create_medical_appointment){
                 generateViewId()
                 backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.colorPrimary))
                 textColor = Color.WHITE
             }.lparams(matchParent){
-                below(actionBar)
+                below(createScheduleButton)
             }
 
             verConsultaButton = button(R.string.view_medical_appointment){

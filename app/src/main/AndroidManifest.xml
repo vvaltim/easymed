@@ -19,6 +19,7 @@
         <activity android:name=".vc.MainActivity" />
         <activity android:name=".vc.LoginActivity" />
         <activity android:name=".vc.UserRegisterActivity" />
+        <activity android:name=".vc.CreateSchedule" />
     </application>
 
 </manifest>

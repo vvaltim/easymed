@@ -5,8 +5,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import br.com.waltervjunior.easymed.EasymedApplication
+import br.com.waltervjunior.easymed.R
 import com.google.firebase.auth.FirebaseAuth
 import org.jetbrains.anko.sdk25.coroutines.onClick
+import org.jetbrains.anko.selector
 import org.jetbrains.anko.setContentView
 
 class MainActivity : Activity(){
@@ -28,6 +30,20 @@ class MainActivity : Activity(){
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_CLEAR_TOP
             startActivity(intent)
         }
-
+        ui.createScheduleButton.onClick {
+            selector("Qual agenda deseja configurar?", listOf("Agenda padrão", "Agenda diaria")){ _, i ->
+                val intent = Intent(this@MainActivity, CreateSchedule::class.java)
+                when(i){
+                    0 -> {
+                        intent.putExtra("SCHEDULE_TYPE","Configurar agenda padrão")
+                        startActivity(intent)
+                    }
+                    1 -> {
+                        intent.putExtra("SCHEDULE_TYPE","Configurar agenda diária")
+                        startActivity(intent)
+                    }
+                }
+            }
+        }
     }
 }
