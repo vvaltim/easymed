@@ -6,10 +6,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import br.com.waltervjunior.easymed.extension.longSnackbar
 import br.com.waltervjunior.easymed.model.Doctor
 import br.com.waltervjunior.easymed.model.Patient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.gson.Gson
+import org.jetbrains.anko.contentView
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.setContentView
@@ -70,7 +72,7 @@ class UserRegisterActivity : Activity(){
                                 } else {
                                     // Se o login falhar, validar as exception
                                     Log.d(TAG, "createUserWithEmail:failure", task.exception)
-                                    toast("Authentication failed.")
+                                    contentView?.longSnackbar("Falha ao realizar login.")
                                 }
                             }
                 }

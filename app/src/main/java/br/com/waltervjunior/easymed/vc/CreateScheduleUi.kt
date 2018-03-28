@@ -4,6 +4,7 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.Typeface
 import android.support.v4.content.ContextCompat
+import android.text.InputType
 import android.text.TextUtils
 import android.view.Gravity
 import android.widget.*
@@ -14,9 +15,18 @@ import br.com.waltervjunior.easymed.extension.generateViewId
 import org.jetbrains.anko.*
 
 class CreateScheduleUi : AnkoComponent<CreateSchedule> {
+    companion object {
+        var radio1 = 15
+        var radio2 = 30
+        var radio3 = 60
+    }
     lateinit var actionBar: ActionBar
 
-    private lateinit var dayOfWeekTextView : TextView
+    lateinit var dateTextView: TextView
+    lateinit var dateEditText: EditText
+
+    lateinit var dayOfWeekTextView : TextView
+    lateinit var dayOfWeekContainer : RelativeLayout
     lateinit var sundayCheckBox: CheckBox
     lateinit var mondayCheckBox: CheckBox
     lateinit var tuesdayCheckBox: CheckBox
@@ -55,60 +65,81 @@ class CreateScheduleUi : AnkoComponent<CreateSchedule> {
                 relativeLayout {
                     padding = dip(10)
 
-                    dayOfWeekTextView = textView("Dias da semana"){
+                    dateTextView = textView("Data vigente da agenda"){
                         generateViewId()
                         textSize = 16f
                         typeface = Typeface.DEFAULT_BOLD
                     }.lparams(matchParent)
-                    mondayCheckBox = checkBox("Domingo"){
+                    dateEditText = editText {
                         generateViewId()
                         textColor = TextView(context).currentTextColor
                         textSize = 18f
+                        hint = "Data"
+                        gravity = Gravity.CENTER_HORIZONTAL
+                        isFocusable = false
+                    }.lparams(matchParent){
+                        below(dateTextView)
+                    }
+
+                    dayOfWeekTextView = textView("Dias da semana"){
+                        generateViewId()
+                        textSize = 16f
+                        typeface = Typeface.DEFAULT_BOLD
+                    }.lparams(matchParent){
+                        below(dateEditText)
+                    }
+                    dayOfWeekContainer = relativeLayout{
+                        generateViewId()
+                        mondayCheckBox = checkBox("Domingo"){
+                            generateViewId()
+                            textColor = TextView(context).currentTextColor
+                            textSize = 18f
+                        }.lparams(matchParent)
+                        sundayCheckBox = checkBox("Segunda-feira"){
+                            generateViewId()
+                            textColor = TextView(context).currentTextColor
+                            textSize = 18f
+                        }.lparams(wrapContent){
+                            below(mondayCheckBox)
+                        }
+                        tuesdayCheckBox = checkBox("Terça-feira"){
+                            generateViewId()
+                            textColor = TextView(context).currentTextColor
+                            textSize = 18f
+                        }.lparams(matchParent){
+                            below(sundayCheckBox)
+                        }
+                        wednesdayCheckBox = checkBox("Quarta-feira"){
+                            generateViewId()
+                            textColor = TextView(context).currentTextColor
+                            textSize = 18f
+                        }.lparams(matchParent){
+                            below(tuesdayCheckBox)
+                        }
+                        thursdayCheckBox = checkBox("Quinta-feira"){
+                            generateViewId()
+                            textColor = TextView(context).currentTextColor
+                            textSize = 18f
+                        }.lparams(matchParent){
+                            below(wednesdayCheckBox)
+                        }
+                        fridayCheckBox = checkBox("Sexta-feira"){
+                            generateViewId()
+                            textColor = TextView(context).currentTextColor
+                            textSize = 18f
+                        }.lparams(matchParent){
+                            below(thursdayCheckBox)
+                        }
+                        saturdayCheckBox = checkBox("Sabado"){
+                            generateViewId()
+                            textColor = TextView(context).currentTextColor
+                            textSize = 18f
+                        }.lparams(matchParent){
+                            below(fridayCheckBox)
+
+                        }
                     }.lparams(matchParent){
                         below(dayOfWeekTextView)
-                    }
-                    sundayCheckBox = checkBox("Segunda-feira"){
-                        generateViewId()
-                        textColor = TextView(context).currentTextColor
-                        textSize = 18f
-                    }.lparams(wrapContent){
-                        below(mondayCheckBox)
-                    }
-                    tuesdayCheckBox = checkBox("Terça-feira"){
-                        generateViewId()
-                        textColor = TextView(context).currentTextColor
-                        textSize = 18f
-                    }.lparams(matchParent){
-                        below(sundayCheckBox)
-                    }
-                    wednesdayCheckBox = checkBox("Quarta-feira"){
-                        generateViewId()
-                        textColor = TextView(context).currentTextColor
-                        textSize = 18f
-                    }.lparams(matchParent){
-                        below(tuesdayCheckBox)
-                    }
-                    thursdayCheckBox = checkBox("Quinta-feira"){
-                        generateViewId()
-                        textColor = TextView(context).currentTextColor
-                        textSize = 18f
-                    }.lparams(matchParent){
-                        below(wednesdayCheckBox)
-                    }
-                    fridayCheckBox = checkBox("Sexta-feira"){
-                        generateViewId()
-                        textColor = TextView(context).currentTextColor
-                        textSize = 18f
-                    }.lparams(matchParent){
-                        below(thursdayCheckBox)
-                    }
-                    saturdayCheckBox = checkBox("Sabado"){
-                        generateViewId()
-                        textColor = TextView(context).currentTextColor
-                        textSize = 18f
-                    }.lparams(matchParent){
-                        below(fridayCheckBox)
-
                     }
 
                     morningPeriodTextView = textView("Período da manha"){
@@ -116,7 +147,7 @@ class CreateScheduleUi : AnkoComponent<CreateSchedule> {
                         textSize = 16f
                         typeface = Typeface.DEFAULT_BOLD
                     }.lparams(matchParent){
-                        below(saturdayCheckBox)
+                        below(dayOfWeekContainer)
                         topMargin = dip(10)
                     }
                     morningConteiner = linearLayout {
@@ -128,7 +159,7 @@ class CreateScheduleUi : AnkoComponent<CreateSchedule> {
                             textSize = 18f
                             hint = "Hora inicial"
                             gravity = Gravity.CENTER_HORIZONTAL
-                            isFocusable = false
+                            inputType = InputType.TYPE_CLASS_NUMBER
                         }.lparams(matchParent){
                             weight = 1f
                         }
@@ -138,7 +169,7 @@ class CreateScheduleUi : AnkoComponent<CreateSchedule> {
                             textSize = 18f
                             hint = "Hora final"
                             gravity = Gravity.CENTER_HORIZONTAL
-                            isFocusable = false
+                            inputType = InputType.TYPE_CLASS_NUMBER
                         }.lparams(matchParent){
                             weight = 1f
                         }
@@ -163,7 +194,7 @@ class CreateScheduleUi : AnkoComponent<CreateSchedule> {
                             hint = "Hora inicial"
                             textSize = 18f
                             gravity = Gravity.CENTER_HORIZONTAL
-                            isFocusable = false
+                            inputType = InputType.TYPE_CLASS_NUMBER
                         }.lparams(matchParent){
                             weight = 1f
                         }
@@ -173,7 +204,7 @@ class CreateScheduleUi : AnkoComponent<CreateSchedule> {
                             hint = "Hora final"
                             textSize = 18f
                             gravity = Gravity.CENTER_HORIZONTAL
-                            isFocusable = false
+                            inputType = InputType.TYPE_CLASS_NUMBER
                         }.lparams(matchParent){
                             weight = 1f
                         }
@@ -193,19 +224,20 @@ class CreateScheduleUi : AnkoComponent<CreateSchedule> {
                         generateViewId()
 
                         intervalOneRadioButton = radioButton{
-                            generateViewId()
+                            id = radio1
                             textColor = TextView(context).currentTextColor
                             text = "15 em 15 minutos"
                             textSize = 18f
+                            isChecked = true
                         }.lparams(matchParent)
                         intervalTwoRadioButton = radioButton {
-                            generateViewId()
+                            id = radio2
                             textColor = TextView(context).currentTextColor
                             text = "30 e 30 minutos"
                             textSize = 18f
                         }.lparams(matchParent)
                         intervalThreeRadioButton = radioButton{
-                            generateViewId()
+                            id = radio3
                             textColor = TextView(context).currentTextColor
                             text = "Hora em hora"
                             textSize = 18f

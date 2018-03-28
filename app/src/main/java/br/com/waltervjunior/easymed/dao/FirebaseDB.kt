@@ -3,6 +3,7 @@ package br.com.waltervjunior.easymed.dao
 import android.util.Log
 import br.com.waltervjunior.easymed.model.Doctor
 import br.com.waltervjunior.easymed.model.Patient
+import br.com.waltervjunior.easymed.model.Schedule
 import com.google.firebase.firestore.FirebaseFirestore
 
 
