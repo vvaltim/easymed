@@ -21,6 +21,7 @@ class CreateScheduleUi : AnkoComponent<CreateSchedule> {
         var radio3 = 60
     }
     lateinit var actionBar: ActionBar
+    lateinit var scrollView : ScrollView
 
     lateinit var dateTextView: TextView
     lateinit var dateEditText: EditText
@@ -61,7 +62,8 @@ class CreateScheduleUi : AnkoComponent<CreateSchedule> {
                 show(backImageView)
             }
 
-            scrollView {
+            scrollView = scrollView {
+                generateViewId()
                 relativeLayout {
                     padding = dip(10)
 
@@ -155,6 +157,7 @@ class CreateScheduleUi : AnkoComponent<CreateSchedule> {
 
                         initMorningEditText = editText {
                             generateViewId()
+                            isFocusable = false
                             textColor = TextView(context).currentTextColor
                             textSize = 18f
                             hint = "Hora inicial"
@@ -165,6 +168,7 @@ class CreateScheduleUi : AnkoComponent<CreateSchedule> {
                         }
                         finalMorningEditText = editText {
                             generateViewId()
+                            isFocusable = false
                             textColor = TextView(context).currentTextColor
                             textSize = 18f
                             hint = "Hora final"
@@ -190,6 +194,7 @@ class CreateScheduleUi : AnkoComponent<CreateSchedule> {
 
                         initAfternoonEditText = editText{
                             generateViewId()
+                            isFocusable = false
                             textColor = TextView(context).currentTextColor
                             hint = "Hora inicial"
                             textSize = 18f
@@ -200,6 +205,7 @@ class CreateScheduleUi : AnkoComponent<CreateSchedule> {
                         }
                         finalAfternoonEditText = editText{
                             generateViewId()
+                            isFocusable = false
                             textColor = TextView(context).currentTextColor
                             hint = "Hora final"
                             textSize = 18f

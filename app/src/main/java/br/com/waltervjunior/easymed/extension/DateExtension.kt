@@ -6,6 +6,13 @@ import java.util.*
 /**
  * Created by Walter on 24/03/2018.
  */
+fun Date.addMinutes(minutes : Int): Date{
+    val c = Calendar.getInstance()
+    c.time = this
+    c.add(Calendar.MINUTE, minutes)
+    return Date(c.timeInMillis)
+}
+
 fun Date.addDays(days: Int): Date {
     val c = Calendar.getInstance()
     c.time = this

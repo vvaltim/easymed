@@ -20,6 +20,7 @@
         <activity android:name=".vc.LoginActivity" />
         <activity android:name=".vc.UserRegisterActivity" />
         <activity android:name=".vc.CreateSchedule" />
+        <activity android:name=".vc.PartialConfigurationActivity" />
     </application>
 
 </manifest>

@@ -11,21 +11,28 @@ import android.view.View
 import br.com.waltervjunior.easymed.extension.asString
 import br.com.waltervjunior.easymed.extension.getDate
 import br.com.waltervjunior.easymed.extension.longSnackbar
+import br.com.waltervjunior.easymed.extension.snackbar
+import br.com.waltervjunior.easymed.model.DetailedConfiguration
 import br.com.waltervjunior.easymed.model.Schedule
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
 import org.jetbrains.anko.contentView
 import org.jetbrains.anko.indeterminateProgressDialog
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.setContentView
+import org.jetbrains.anko.toast
 import java.util.*
 
 class CreateSchedule : Activity() {
+    companion object {
+        const val PARTIAL_CONFIG = 1
+    }
     lateinit var ui : CreateScheduleUi
     private var db = FirebaseFirestore.getInstance()
+    var mSchedule : Schedule = Schedule()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        //region <! Definindo a interface !>
         super.onCreate(savedInstanceState)
         ui = CreateScheduleUi()
         ui.setContentView(this)
@@ -51,6 +58,7 @@ class CreateSchedule : Activity() {
                 ui.dateEditText.visibility = View.VISIBLE
             }
         }
+        //endregion
 
         //region <! Quando clicar no dia específico !>
         var dateCalendar = Calendar.getInstance()
@@ -72,71 +80,63 @@ class CreateSchedule : Activity() {
         //endregion
 
         //region <! Quando clicar no Manha hora inicial e final !>
-        /*var amInitialHourCalendar = Calendar.getInstance()
+        val amInitialHourCalendar = Calendar.getInstance()
         ui.initMorningEditText.setOnClickListener {
-            val amInitialHourTimePickerDialog = TimePickerDialog(this@CreateSchedule, TimePickerDialog.OnTimeSetListener { _, hour, minute ->
+            TimePickerDialog(this@CreateSchedule, TimePickerDialog.OnTimeSetListener { _, hour, minute ->
                 amInitialHourCalendar.set(Calendar.HOUR_OF_DAY, hour)
                 amInitialHourCalendar.set(Calendar.MINUTE, minute)
                 ui.initMorningEditText.setText((amInitialHourCalendar.time.asString("HH:mm")))
-                //mModel.horaInicial = amInitialHourCalendar.time.asString("HH:mm")
-            }, amInitialHourCalendar.get(Calendar.HOUR_OF_DAY), amInitialHourCalendar.get(Calendar.MINUTE), true)
-            amInitialHourTimePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL, "Limpar", { _, _ ->
-                amInitialHourCalendar = Calendar.getInstance()
-                ui.initMorningEditText.text.clear()
-                //mModel.horaInicial = ""
-            })
-            amInitialHourTimePickerDialog.show()
+                mSchedule.amHourInitial = amInitialHourCalendar.time
+            }, amInitialHourCalendar.get(Calendar.HOUR_OF_DAY), amInitialHourCalendar.get(Calendar.MINUTE), true).show()
         }
 
-        var amFinalHourCalendar = Calendar.getInstance()
+        val amFinalHourCalendar = Calendar.getInstance()
         ui.finalMorningEditText.setOnClickListener {
-            val amFinalHourTimePickerDialog = TimePickerDialog(this@CreateSchedule, TimePickerDialog.OnTimeSetListener { _, hour, minute ->
+            TimePickerDialog(this@CreateSchedule, TimePickerDialog.OnTimeSetListener { _, hour, minute ->
                 amFinalHourCalendar.set(Calendar.HOUR_OF_DAY, hour)
                 amFinalHourCalendar.set(Calendar.MINUTE, minute)
                 ui.finalMorningEditText.setText((amFinalHourCalendar.time.asString("HH:mm")))
-                //mModel.horaInicial = amFinalHourCalendar.time.asString("HH:mm")
-            }, amFinalHourCalendar.get(Calendar.HOUR_OF_DAY), amFinalHourCalendar.get(Calendar.MINUTE), true)
-            amFinalHourTimePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL, "Limpar", { _, _ ->
-                amFinalHourCalendar = Calendar.getInstance()
-                ui.finalMorningEditText.text.clear()
-                //mModel.horaInicial = ""
-            })
-            amFinalHourTimePickerDialog.show()
-        }*/
+                mSchedule.amHourFinal = amFinalHourCalendar.time
+            }, amFinalHourCalendar.get(Calendar.HOUR_OF_DAY), amFinalHourCalendar.get(Calendar.MINUTE), true).show()
+        }
         //endregion
 
         //region <! Quando clicar no Tarde hora inicial e final !>
-        /*var pmInitialHourCalendar = Calendar.getInstance()
+        val pmInitialHourCalendar = Calendar.getInstance()
         ui.initAfternoonEditText.setOnClickListener {
-            val pmInitialHourTimePickerDialog = TimePickerDialog(this@CreateSchedule, TimePickerDialog.OnTimeSetListener { _, hour, minute ->
+            TimePickerDialog(this@CreateSchedule, TimePickerDialog.OnTimeSetListener { _, hour, minute ->
                 pmInitialHourCalendar.set(Calendar.HOUR_OF_DAY, hour)
                 pmInitialHourCalendar.set(Calendar.MINUTE, minute)
                 ui.initAfternoonEditText.setText((pmInitialHourCalendar.time.asString("HH:mm")))
-                //mModel.horaInicial = pmInitialHourCalendar.time.asString("HH:mm")
-            }, pmInitialHourCalendar.get(Calendar.HOUR_OF_DAY), pmInitialHourCalendar.get(Calendar.MINUTE), true)
-            pmInitialHourTimePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL, "Limpar", { _, _ ->
-                pmInitialHourCalendar = Calendar.getInstance()
-                ui.initAfternoonEditText.text.clear()
-                //mModel.horaInicial = ""
-            })
-            pmInitialHourTimePickerDialog.show()
+                mSchedule.pmHourInitial = pmInitialHourCalendar.time
+            }, pmInitialHourCalendar.get(Calendar.HOUR_OF_DAY), pmInitialHourCalendar.get(Calendar.MINUTE), true).show()
         }
 
-        var pmFinalHourCalendar = Calendar.getInstance()
+        val pmFinalHourCalendar = Calendar.getInstance()
         ui.finalAfternoonEditText.setOnClickListener {
-            val pmFinalHourTimePickerDialog = TimePickerDialog(this@CreateSchedule, TimePickerDialog.OnTimeSetListener { _, hour, minute ->
+            TimePickerDialog(this@CreateSchedule, TimePickerDialog.OnTimeSetListener { _, hour, minute ->
                 pmFinalHourCalendar.set(Calendar.HOUR_OF_DAY, hour)
                 pmFinalHourCalendar.set(Calendar.MINUTE, minute)
                 ui.finalAfternoonEditText.setText((pmFinalHourCalendar.time.asString("HH:mm")))
-                //mModel.horaInicial = pmFinalHourCalendar.time.asString("HH:mm")
-            }, pmFinalHourCalendar.get(Calendar.HOUR_OF_DAY), pmFinalHourCalendar.get(Calendar.MINUTE), true)
-            pmFinalHourTimePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL, "Limpar", { _, _ ->
-                pmFinalHourCalendar = Calendar.getInstance()
-                ui.finalAfternoonEditText.text.clear()
-                //mModel.horaInicial = ""
-            })
-            pmFinalHourTimePickerDialog.show()
-        }*/
+                mSchedule.pmHourFinal = pmFinalHourCalendar.time
+            }, pmFinalHourCalendar.get(Calendar.HOUR_OF_DAY), pmFinalHourCalendar.get(Calendar.MINUTE), true).show()
+        }
+        //endregion
+
+        //region <! Quando clicar em configurar parcialmente !>
+        ui.partialConfigButton.onClick {
+            mSchedule.interval = ui.intervalRadioGroup.checkedRadioButtonId
+            toast(mSchedule.interval.toString())
+            if(isSchedulePeriods()){
+                //chamar tela de definir as configurações personalizadas
+                val intent = Intent(this@CreateSchedule, PartialConfigurationActivity::class.java)
+                intent.putExtra("SCHEDULE", mSchedule)
+                startActivityForResult(intent, PARTIAL_CONFIG)
+            } else {
+                //mostrar snackbar de preencyha as datas tal
+                ui.scrollView.snackbar("É necessário preencher os periodos")
+            }
+        }
         //endregion
 
         //region <! Quando clicar  em salvar !>
@@ -146,22 +146,17 @@ class CreateSchedule : Activity() {
 
                 }
                 "Configurar agenda diária" -> {
-                    val agendaDiaria = Schedule( amHourInitial = ui.initMorningEditText.text.toString().toInt(),
-                            amHourFinal = ui.finalMorningEditText.text.toString().toInt(),
-                            pmHourInitial = ui.initAfternoonEditText.text.toString().toInt(),
-                            pmHourFinal = ui.finalAfternoonEditText.text.toString().toInt(),
-                            interval = ui.intervalRadioGroup.checkedRadioButtonId)
-                    agendaDiaria.dateSchedule = ui.dateEditText.text.toString().getDate("dd/MM/yyyy")
-                    Log.d("Agenda Diária", Gson().toJson(agendaDiaria))
+                    mSchedule.dateSchedule = ui.dateEditText.text.toString().getDate("dd/MM/yyyy")
+                    Log.d("Agenda Diária", Gson().toJson(mSchedule))
 
                     //salvar no firebase
                     indeterminateProgressDialog("Autenticando..."){
                         setCancelable(false)
                         setOnShowListener {
-                            db.collection("schedules").add(agendaDiaria)
+                            db.collection("schedules").add(mSchedule)
                                     .addOnSuccessListener {documentReference ->
                                         dismiss()
-                                        agendaDiaria.id = documentReference.id
+                                        mSchedule.id = documentReference.id
 
                                         //informar que a agenda foi salva com sucesso e retornar pra dashboard
                                         contentView?.longSnackbar("Agenda salva com sucesso.")
@@ -179,4 +174,25 @@ class CreateSchedule : Activity() {
         }
         //endregion
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == RESULT_OK){
+            if (requestCode == PARTIAL_CONFIG){
+                mSchedule.detailedConfiguration = data?.getSerializableExtra("DETAILED_CONFIG") as DetailedConfiguration
+                Log.d("Detailed configuration", Gson().toJson(mSchedule.detailedConfiguration))
+            } else {
+                toast("BackButton pressed")
+            }
+        }
+    }
+
+    //region <! Pegando os campos de periodo !>
+    fun isSchedulePeriods() : Boolean{
+        return mSchedule.amHourInitial != null &&
+                mSchedule.amHourFinal != null &&
+                mSchedule.pmHourInitial != null &&
+                mSchedule.pmHourFinal != null
+    }
+    //endregion
 }
