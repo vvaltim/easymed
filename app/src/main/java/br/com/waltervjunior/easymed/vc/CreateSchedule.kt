@@ -22,6 +22,7 @@ import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.setContentView
 import org.jetbrains.anko.toast
 import java.util.*
+import kotlin.collections.ArrayList
 
 class CreateSchedule : Activity() {
     companion object {
@@ -30,6 +31,7 @@ class CreateSchedule : Activity() {
     lateinit var ui : CreateScheduleUi
     private var db = FirebaseFirestore.getInstance()
     var mSchedule : Schedule = Schedule()
+    var mDayOfWeek = ArrayList<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         //region <! Definindo a interface !>
@@ -126,7 +128,6 @@ class CreateSchedule : Activity() {
         //region <! Quando clicar em configurar parcialmente !>
         ui.partialConfigButton.onClick {
             mSchedule.interval = ui.intervalRadioGroup.checkedRadioButtonId
-            toast(mSchedule.interval.toString())
             if(isSchedulePeriods()){
                 //chamar tela de definir as configurações personalizadas
                 val intent = Intent(this@CreateSchedule, PartialConfigurationActivity::class.java)
@@ -141,33 +142,67 @@ class CreateSchedule : Activity() {
 
         //region <! Quando clicar  em salvar !>
         ui.createButton.onClick {
+            if (mSchedule.detailedConfiguration == null)
+                mSchedule.detailedConfiguration = DetailedConfiguration()
             when(scheduleType){
                 "Configurar agenda padrão" -> {
+                    //coloca todos os checkbox na variavel
+                    checkBoxDayOfWeekendIsChecked()
+                    Log.d("CheckBoxs", Gson().toJson(mDayOfWeek))
+                    if(mDayOfWeek.isNotEmpty()){
+                        mSchedule.detailedConfiguration?.days = mDayOfWeek
+                        //salvar no firebase
+                        indeterminateProgressDialog("Autenticando...") {
+                            setCancelable(false)
+                            setOnShowListener {
+                                db.collection("schedules").add(mSchedule)
+                                        .addOnSuccessListener { documentReference ->
+                                            dismiss()
+                                            mSchedule.id = documentReference.id
 
+                                            //informar que a agenda foi salva com sucesso e retornar pra dashboard
+                                            contentView?.longSnackbar("Agenda salva com sucesso.")
+                                            startActivity(Intent(this@CreateSchedule, MainActivity::class.java))
+                                        }.addOnFailureListener {
+                                            dismiss()
+
+                                            //informar que a agenda deu pau
+                                            contentView?.longSnackbar("Não foi possível salvar a agenda. Tente novamente mais tarde.")
+                                        }
+                            }
+                        }
+                    }else{
+                        contentView?.longSnackbar("E necessário selecionar ao menos 1 dia da semana para salvar a agenda.")
+                    }
                 }
                 "Configurar agenda diária" -> {
-                    mSchedule.dateSchedule = ui.dateEditText.text.toString().getDate("dd/MM/yyyy")
-                    Log.d("Agenda Diária", Gson().toJson(mSchedule))
+                    if (ui.dateEditText.text.isNotEmpty()) {
+                        mSchedule.dateSchedule = ui.dateEditText.text.toString().getDate("dd/MM/yyyy")
+                        mSchedule.detailedConfiguration?.days = null
+                        Log.d("Agenda Diária", Gson().toJson(mSchedule))
 
-                    //salvar no firebase
-                    indeterminateProgressDialog("Autenticando..."){
-                        setCancelable(false)
-                        setOnShowListener {
-                            db.collection("schedules").add(mSchedule)
-                                    .addOnSuccessListener {documentReference ->
-                                        dismiss()
-                                        mSchedule.id = documentReference.id
+                        //salvar no firebase
+                        indeterminateProgressDialog("Autenticando...") {
+                            setCancelable(false)
+                            setOnShowListener {
+                                db.collection("schedules").add(mSchedule)
+                                        .addOnSuccessListener { documentReference ->
+                                            dismiss()
+                                            mSchedule.id = documentReference.id
 
-                                        //informar que a agenda foi salva com sucesso e retornar pra dashboard
-                                        contentView?.longSnackbar("Agenda salva com sucesso.")
-                                        startActivity(Intent(this@CreateSchedule, MainActivity::class.java))
-                                    }.addOnFailureListener {
-                                        dismiss()
+                                            //informar que a agenda foi salva com sucesso e retornar pra dashboard
+                                            contentView?.longSnackbar("Agenda salva com sucesso.")
+                                            startActivity(Intent(this@CreateSchedule, MainActivity::class.java))
+                                        }.addOnFailureListener {
+                                            dismiss()
 
-                                        //informar que a agenda deu pau
-                                        contentView?.longSnackbar("Não foi possível salvar a agenda. Tente novamente mais tarde.")
-                                    }
+                                            //informar que a agenda deu pau
+                                            contentView?.longSnackbar("Não foi possível salvar a agenda. Tente novamente mais tarde.")
+                                        }
+                            }
                         }
+                    }else{
+                        contentView?.longSnackbar("E necessário inserir uma data para salvar a agenda.")
                     }
                 }
             }
@@ -175,24 +210,61 @@ class CreateSchedule : Activity() {
         //endregion
     }
 
+    //region <! Ao retornar da PartialConfiguration !>
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK){
             if (requestCode == PARTIAL_CONFIG){
-                mSchedule.detailedConfiguration = data?.getSerializableExtra("DETAILED_CONFIG") as DetailedConfiguration
+                if (mSchedule.detailedConfiguration == null)
+                    mSchedule.detailedConfiguration = DetailedConfiguration()
+                mSchedule.detailedConfiguration?.ignoreHours = data?.getSerializableExtra("DETAILED_CONFIG") as ArrayList<String>
                 Log.d("Detailed configuration", Gson().toJson(mSchedule.detailedConfiguration))
-            } else {
-                toast("BackButton pressed")
-            }
+            }// else {
+            //toast("BackButton pressed")
+            //}
         }
     }
+    //endregion
 
     //region <! Pegando os campos de periodo !>
-    fun isSchedulePeriods() : Boolean{
+    private fun isSchedulePeriods() : Boolean{
         return mSchedule.amHourInitial != null &&
                 mSchedule.amHourFinal != null &&
                 mSchedule.pmHourInitial != null &&
                 mSchedule.pmHourFinal != null
+    }
+    //endregion
+
+    //region <! Dias da semana selecionados !>
+    fun checkBoxDayOfWeekendIsChecked(){
+        if (ui.sundayCheckBox.isChecked)
+            mDayOfWeek.add(ui.sundayCheckBox.text as String)
+        else
+            mDayOfWeek.remove(ui.sundayCheckBox.text as String)
+        if(ui.mondayCheckBox.isChecked)
+            mDayOfWeek.add(ui.mondayCheckBox.text as String)
+        else
+            mDayOfWeek.remove(ui.mondayCheckBox.text as String)
+        if(ui.tuesdayCheckBox.isChecked)
+            mDayOfWeek.add(ui.tuesdayCheckBox.text as String)
+        else
+            mDayOfWeek.remove(ui.tuesdayCheckBox.text as String)
+        if(ui.wednesdayCheckBox.isChecked)
+            mDayOfWeek.add(ui.wednesdayCheckBox.text as String)
+        else
+            mDayOfWeek.remove(ui.wednesdayCheckBox.text as String)
+        if(ui.thursdayCheckBox.isChecked)
+            mDayOfWeek.add(ui.thursdayCheckBox.text as String)
+        else
+            mDayOfWeek.remove(ui.thursdayCheckBox.text as String)
+        if(ui.fridayCheckBox.isChecked)
+            mDayOfWeek.add(ui.fridayCheckBox.text as String)
+        else
+            mDayOfWeek.remove(ui.fridayCheckBox.text as String)
+        if(ui.saturdayCheckBox.isChecked)
+            mDayOfWeek.add(ui.saturdayCheckBox.text as String)
+        else
+            mDayOfWeek.remove(ui.saturdayCheckBox.text as String)
     }
     //endregion
 }

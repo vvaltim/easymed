@@ -1,12 +1,14 @@
 package br.com.waltervjunior.easymed.vc
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import br.com.waltervjunior.easymed.adapter.PartialConfigurationAdapter
 import br.com.waltervjunior.easymed.extension.addMinutes
 import br.com.waltervjunior.easymed.extension.asString
 import br.com.waltervjunior.easymed.model.Schedule
+import com.google.gson.Gson
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.setContentView
 import java.util.*
@@ -36,14 +38,17 @@ class PartialConfigurationActivity : Activity(){
             onBackPressed()
         }
         //endregion
-    }
 
-    //region <! Ao pressionar o backButton !>
-    override fun onBackPressed() {
-        super.onBackPressed()
+        //region <! Ao precionar o botão de salvar !>
+        ui.saveImageView.onClick {
+            Log.d("Horas ignoradas", Gson().toJson((ui.listView.adapter as PartialConfigurationAdapter).ignoreHours))
+            val intent = Intent()
+            intent.putExtra("DETAILED_CONFIG", (ui.listView.adapter as PartialConfigurationAdapter).ignoreHours)
+            setResult(RESULT_OK, intent)
+            onBackPressed()
+        }
+        //endregion
     }
-    //endregion
-
     //region <! Adicionando os intervalos na ArrayList !>
     private fun addHoursToArraylist(init : Date, final : Date, interval : Int){
         var hourTemp = init

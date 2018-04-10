@@ -10,6 +10,7 @@ class PartialConfigurationAdapterUi : AnkoComponent<PartialConfigurationAdapter>
         relativeLayout {
             checkBox {
                 id = CHECKBOX
+                isChecked = true
                 textSize = 16f
             }.lparams{
                 margin = dip(10)

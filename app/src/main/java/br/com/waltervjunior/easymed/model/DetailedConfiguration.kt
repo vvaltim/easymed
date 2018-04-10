@@ -1,6 +1,6 @@
 package br.com.waltervjunior.easymed.model
 
 class DetailedConfiguration {
-    var days : Array<String>? = null
-    var ignoreHours : Array<String>? = null
+    var days : ArrayList<String>? = null
+    var ignoreHours : ArrayList<String>? = null
 }
