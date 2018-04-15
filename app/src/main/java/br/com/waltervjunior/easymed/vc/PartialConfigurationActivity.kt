@@ -3,6 +3,7 @@ package br.com.waltervjunior.easymed.vc
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.widget.StaggeredGridLayoutManager
 import android.util.Log
 import br.com.waltervjunior.easymed.adapter.PartialConfigurationAdapter
 import br.com.waltervjunior.easymed.extension.addMinutes
@@ -29,7 +30,9 @@ class PartialConfigurationActivity : Activity(){
             addHoursToArraylist(schedule.amHourInitial!!, schedule.amHourFinal!!, schedule.interval!!)
             addHoursToArraylist(schedule.pmHourInitial!!, schedule.pmHourFinal!!, schedule.interval!!)
 
-            ui.listView.adapter = PartialConfigurationAdapter(this@PartialConfigurationActivity, mHours)
+            //ui.listView.adapter = PartialConfigurationAdapter(this@PartialConfigurationActivity, mHours)
+            ui.recyclerView.adapter = PartialConfigurationAdapter(mHours)
+            ui.recyclerView.layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
         }
         //endregion
 
@@ -41,11 +44,12 @@ class PartialConfigurationActivity : Activity(){
 
         //region <! Ao precionar o botão de salvar !>
         ui.saveImageView.onClick {
-            Log.d("Horas ignoradas", Gson().toJson((ui.listView.adapter as PartialConfigurationAdapter).ignoreHours))
-            val intent = Intent()
+
+            Log.d("Horas ignoradas", Gson().toJson((ui.recyclerView.adapter as PartialConfigurationAdapter).ignoreHours))
+            /*val intent = Intent()
             intent.putExtra("DETAILED_CONFIG", (ui.listView.adapter as PartialConfigurationAdapter).ignoreHours)
             setResult(RESULT_OK, intent)
-            onBackPressed()
+            onBackPressed()*/
         }
         //endregion
     }
@@ -54,7 +58,6 @@ class PartialConfigurationActivity : Activity(){
         var hourTemp = init
         while (hourTemp < final){
             mHours.add(hourTemp.asString("hh:mm"))
-            Log.d("Hora adicionada", hourTemp.asString("hh:mm"))
             hourTemp = hourTemp.addMinutes(interval)
         }
     }

@@ -1,20 +1,20 @@
 package br.com.waltervjunior.easymed.vc
 
-import android.view.Gravity
+import android.support.v7.widget.RecyclerView
 import android.widget.ImageView
-import android.widget.ListView
-import android.widget.RelativeLayout
 import br.com.waltervjunior.easymed.R
 import br.com.waltervjunior.easymed.component.ActionBar
 import br.com.waltervjunior.easymed.component.actionBar
 import br.com.waltervjunior.easymed.extension.generateViewId
 import org.jetbrains.anko.*
+import org.jetbrains.anko.recyclerview.v7.recyclerView
 
 class PartialConfigurationActivityUi : AnkoComponent<PartialConfigurationActivity> {
 
     lateinit var actionBar : ActionBar
     lateinit var saveImageView : ImageView
-    lateinit var listView : ListView
+    lateinit var recyclerView: RecyclerView
+    //lateinit var listView : ListView
 
     override fun createView(ui: AnkoContext<PartialConfigurationActivity>)= with(ui) {
         relativeLayout{
@@ -24,12 +24,17 @@ class PartialConfigurationActivityUi : AnkoComponent<PartialConfigurationActivit
                 saveImageView = addActionRight(R.drawable.ic_check_white)
                 show(saveImageView)
             }
-            listView = listView {
+            recyclerView = recyclerView {
+                generateViewId()
+            }.lparams(matchParent, matchParent){
+                below(actionBar)
+            }
+            /*listView = listView {
                 generateViewId()
 
             }.lparams(matchParent, matchParent){
                 below(actionBar)
-            }
+            }*/
         }
     }
 }
