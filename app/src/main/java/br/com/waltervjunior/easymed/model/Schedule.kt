@@ -13,8 +13,4 @@ class Schedule ( var idDoctor: String = PreferenceService.getString("USER_ID")!!
     var id : String? = null
     var dateSchedule : Date? = null
     var detailedConfiguration : DetailedConfiguration? = null
-
-    fun save(schedule: Schedule){
-
-    }
 }

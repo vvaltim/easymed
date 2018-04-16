@@ -21,6 +21,8 @@
         <activity android:name=".vc.UserRegisterActivity" />
         <activity android:name=".vc.CreateSchedule" />
         <activity android:name=".vc.PartialConfigurationActivity" />
+        <activity android:name=".vc.MySchedule" />
+        <activity android:name=".vc.ScheduleAppointmentSpecialization" />
     </application>
 
 </manifest>

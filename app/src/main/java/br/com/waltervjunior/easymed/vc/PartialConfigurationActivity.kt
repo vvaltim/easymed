@@ -46,10 +46,10 @@ class PartialConfigurationActivity : Activity(){
         ui.saveImageView.onClick {
 
             Log.d("Horas ignoradas", Gson().toJson((ui.recyclerView.adapter as PartialConfigurationAdapter).ignoreHours))
-            /*val intent = Intent()
-            intent.putExtra("DETAILED_CONFIG", (ui.listView.adapter as PartialConfigurationAdapter).ignoreHours)
+            val intent = Intent()
+            intent.putExtra("DETAILED_CONFIG", (ui.recyclerView.adapter as PartialConfigurationAdapter).ignoreHours)
             setResult(RESULT_OK, intent)
-            onBackPressed()*/
+            onBackPressed()
         }
         //endregion
     }

@@ -16,6 +16,7 @@ class MainActivityUi : AnkoComponent<MainActivity> {
     lateinit var createScheduleButton : Button
     lateinit var criarConsultaButton: Button
     lateinit var verConsultaButton: Button
+    lateinit var minhaAgenda : Button
     lateinit var sairButton: Button
 
     override fun createView(ui: AnkoContext<MainActivity>) = with(ui){
@@ -48,12 +49,20 @@ class MainActivityUi : AnkoComponent<MainActivity> {
                 below(criarConsultaButton)
             }
 
-            sairButton = button(R.string.exit){
+            minhaAgenda = button("Minha agenda"){
                 generateViewId()
                 backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.colorPrimary))
                 textColor = Color.WHITE
             }.lparams(matchParent){
                 below(verConsultaButton)
+            }
+
+            sairButton = button(R.string.exit){
+                generateViewId()
+                backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.myRed))
+                textColor = Color.WHITE
+            }.lparams(matchParent){
+                below(minhaAgenda)
             }
         }
     }

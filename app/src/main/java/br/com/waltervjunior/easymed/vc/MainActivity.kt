@@ -22,14 +22,6 @@ class MainActivity : Activity(){
         ui.setContentView(this)
         EasymedApplication.activity = this
 
-        ui.sairButton.onClick {
-            //efetua logout do firebase
-            FirebaseAuth.getInstance().signOut()
-
-            val intent = Intent(this@MainActivity, LoginActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_CLEAR_TOP
-            startActivity(intent)
-        }
         ui.createScheduleButton.onClick {
             selector("Qual agenda deseja configurar?", listOf("Agenda padrão", "Agenda diaria")){ _, i ->
                 val intent = Intent(this@MainActivity, CreateSchedule::class.java)
@@ -44,6 +36,20 @@ class MainActivity : Activity(){
                     }
                 }
             }
+        }
+        ui.criarConsultaButton.onClick  {
+            startActivity(Intent(this@MainActivity, ScheduleAppointmentSpecialization::class.java))
+        }
+        ui.minhaAgenda.onClick {
+            startActivity(Intent(this@MainActivity, MySchedule::class.java))
+        }
+        ui.sairButton.onClick {
+            //efetua logout do firebase
+            FirebaseAuth.getInstance().signOut()
+
+            val intent = Intent(this@MainActivity, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_CLEAR_TOP
+            startActivity(intent)
         }
     }
 }
