@@ -78,20 +78,19 @@ class UserRegisterActivity : Activity(){
                 }
             }else{
                 //medico
-                val medico = Doctor(
-                        cellphone = ui.cellPhoneEditText.text.toString(),
-                        email = ui.emailEditText.text.toString(),
-                        address = ui.addressEditText.text.toString(),
-                        crm = ui.crmEditText.text.toString(),
-                        phone = ui.telephoneEditText.text.toString(),
-                        name = ui.nameEditText.text.toString(),
-                        specialist = ui.specialistEditText.text.toString()
-                )
+                val medico = Doctor()
+                medico.cellphone = ui.cellPhoneEditText.text.toString()
+                medico.email = ui.emailEditText.text.toString()
+                medico.address = ui.addressEditText.text.toString()
+                medico.crm = ui.crmEditText.text.toString()
+                medico.phone = ui.telephoneEditText.text.toString()
+                medico.name = ui.nameEditText.text.toString()
+                medico.specialist = ui.specialistEditText.text.toString()
                 Log.d("Médico", Gson().toJson(medico))
 
                 //region <! Criando a conta no firebase !>
                 doAsync {
-                    mAuth.createUserWithEmailAndPassword(medico.email,  ui.passwordEditText.text.toString())
+                    mAuth.createUserWithEmailAndPassword(medico.email!!,  ui.passwordEditText.text.toString())
                             .addOnCompleteListener(this@UserRegisterActivity) { task ->
                                 if (task.isSuccessful) {
                                     // Se o login for efetuado com sucesso

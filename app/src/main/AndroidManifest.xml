@@ -23,6 +23,8 @@
         <activity android:name=".vc.PartialConfigurationActivity" />
         <activity android:name=".vc.MySchedule" />
         <activity android:name=".vc.ScheduleAppointmentSpecialization" />
+        <activity android:name=".vc.ScheduleAppointmentDoctor" />
+        <activity android:name=".vc.ScheduleAppointmentHours" />
     </application>
 
 </manifest>

@@ -32,10 +32,6 @@ class ScheduleAppointmentSpecialization : Activity() {
         ui.swipeRefreshLayout.isRefreshing = true
         updateSpecialization()
         //endregion
-
-//        ui.recyclerView.onClick { handler ->
-//            toast(handler)
-//        }https://stackoverflow.com/questions/24471109/recyclerview-onclick
     }
 
     //region <! Atualizando as especializações !>
@@ -48,7 +44,7 @@ class ScheduleAppointmentSpecialization : Activity() {
                         mSpecialization.add(temp)
                     }
                     runOnUiThread {
-                        ui.recyclerView.adapter = SimpleCardAdapter(mSpecialization)
+                        ui.recyclerView.adapter = SimpleCardAdapter(this@ScheduleAppointmentSpecialization, mSpecialization)
                         ui.swipeRefreshLayout.isRefreshing = false
                     }
                 } else {
