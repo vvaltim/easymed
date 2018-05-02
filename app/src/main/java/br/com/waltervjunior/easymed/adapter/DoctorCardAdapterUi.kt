@@ -20,22 +20,24 @@ class DoctorCardAdapterUi : AnkoComponent<Context>{
                 //setSelectableItemBackground()
 
                 relativeLayout {
+                    setSelectableItemBackground()
+                    padding = dip(10)
+
                     textView {
                         id = ID_TITLE
                         typeface = Typeface.DEFAULT_BOLD
                         textSize = 18f
-                        padding = dip(10)
                     }.lparams(matchParent)
                     textView {
                         id = ID_DESCRIPTION
                         textSize = 16f
-                        padding = dip(10)
+                        topPadding = dip(5)
                     }.lparams(matchParent){
                         below(ID_TITLE)
                     }
                 }
             }.lparams(matchParent){
-                margin = dip(5)
+                setMargins(dip(10), dip(5), dip(10), dip(5))
             }
         }
     }

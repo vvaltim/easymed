@@ -14,11 +14,18 @@ class ScheduleAppointmentDoctor : Activity() {
         ui = ScheduleAppointmentDoctorUi()
         ui.setContentView(this)
 
+
+        //region <! Pegando os médicos da expecialidade passada e colocando no adaptador !>
+        //TODO:Pegar do firebase
         val doctors = ArrayList<Doctor>()
 
         val d1 = Doctor()
-        d1.address = "Clinica Tal"
         d1.name = "Fulano Tal"
+        d1.crm = "123.456"
+        d1.address = "Clinica Tal"
+        d1.phone = "(34) 384123454"
+        d1.cellphone = "(34) 991234567"
+        d1.email = "fulano@clinaca.tal"
         doctors.add(d1)
 
         val d2 = Doctor()
@@ -27,5 +34,6 @@ class ScheduleAppointmentDoctor : Activity() {
         doctors.add(d2)
 
         ui.recyclerView.adapter = DoctorCardAdapter(this@ScheduleAppointmentDoctor, doctors)
+        //endregion
     }
 }
