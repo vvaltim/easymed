@@ -21,8 +21,8 @@ inline fun ViewManager.floatingEditText(init: (@AnkoViewDslMarker FloatingEditTe
         ankoView({ ctx: Context -> FloatingEditText(ctx) }, theme = 0) { init(); lparams() }
 
 class FloatingEditText(ctx : Context) : LinearLayout(ctx) {
-    private var label : TextInputLayout
-    private lateinit var field : TextInputEditText
+    var label : TextInputLayout
+    lateinit var field : TextInputEditText
 
     init {
         generateViewId()

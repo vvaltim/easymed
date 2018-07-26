@@ -4,7 +4,6 @@ import android.graphics.Typeface
 import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
 import android.widget.Button
-import android.widget.EditText
 import android.widget.TextView
 import br.com.waltervjunior.easymed.component.ActionBar
 import br.com.waltervjunior.easymed.component.FloatingEditText
@@ -53,147 +52,160 @@ class ScheduleAppointmentHoursUi : AnkoComponent<ScheduleAppointmentHours> {
                 backImageView.onClick { ui.owner.onBackPressed() }
             }
 
-            //region <! Card com informações do médico !>
-            doctorCardView = cardView {
-                generateViewId()
-
+            scrollView{
                 relativeLayout {
-                    padding = dip(10)
+                    //region <! Card com informações do médico !>
+                    doctorCardView = cardView {
+                        generateViewId()
 
-                    nameTitleTextView = textView {
-                        generateViewId()
-                        text = "Nome:"
-                        textSize = 16f
-                        typeface = Typeface.DEFAULT_BOLD
-                    }
-                    nameTextView = textView{
-                        generateViewId()
-                        textSize = 16f
-                    }.lparams(matchParent){
-                        rightOf(nameTitleTextView)
-                        bottomMargin = dip(5)
-                        marginStart = dip(5)
-                    }
+                        relativeLayout {
+                            padding = dip(10)
 
-                    crmTitleTextView = textView {
-                        generateViewId()
-                        text = "CRM:"
-                        textSize = 16f
-                        typeface = Typeface.DEFAULT_BOLD
+                            nameTitleTextView = textView {
+                                generateViewId()
+                                text = "Nome:"
+                                textSize = 16f
+                                typeface = Typeface.DEFAULT_BOLD
+                            }
+                            nameTextView = textView{
+                                generateViewId()
+                                textSize = 16f
+                            }.lparams(matchParent){
+                                rightOf(nameTitleTextView)
+                                bottomMargin = dip(5)
+                                marginStart = dip(5)
+                            }
+
+                            crmTitleTextView = textView {
+                                generateViewId()
+                                text = "CRM:"
+                                textSize = 16f
+                                typeface = Typeface.DEFAULT_BOLD
+                            }.lparams{
+                                below(nameTitleTextView)
+                            }
+                            crmTextView = textView {
+                                generateViewId()
+                                textSize = 16f
+                            }.lparams(matchParent){
+                                rightOf(crmTitleTextView)
+                                below(nameTitleTextView)
+                                bottomMargin = dip(5)
+                                marginStart = dip(5)
+                            }
+
+                            streetTitleTextView = textView {
+                                generateViewId()
+                                textSize = 16f
+                                text = "Endereço:"
+                                typeface = Typeface.DEFAULT_BOLD
+                            }.lparams{
+                                below(crmTitleTextView)
+                            }
+                            streetTextView = textView {
+                                generateViewId()
+                                textSize = 16f
+                            }.lparams(matchParent){
+                                below(crmTitleTextView)
+                                rightOf(streetTitleTextView)
+                                bottomMargin = dip(5)
+                                marginStart = dip(5)
+                            }
+
+                            phoneTitleTextView = textView{
+                                generateViewId()
+                                textSize = 16f
+                                text = "Telefone:"
+                                typeface = Typeface.DEFAULT_BOLD
+                            }.lparams{
+                                below(streetTitleTextView)
+                            }
+                            phoneTextView = textView {
+                                generateViewId()
+                                textSize = 16f
+                            }.lparams(matchParent){
+                                below(streetTitleTextView)
+                                rightOf(phoneTitleTextView)
+                                bottomMargin = dip(5)
+                                marginStart = dip(5)
+                            }
+
+                            cellphoneTitleTextView = textView {
+                                generateViewId()
+                                textSize = 16f
+                                text = "Celular:"
+                                typeface = Typeface.DEFAULT_BOLD
+                            }.lparams{
+                                below(phoneTitleTextView)
+                            }
+                            cellphoneTextView = textView {
+                                generateViewId()
+                                textSize = 16f
+                            }.lparams(matchParent){
+                                below(phoneTitleTextView)
+                                rightOf(cellphoneTitleTextView)
+                                bottomMargin = dip(5)
+                                marginStart = dip(5)
+                            }
+
+                            emailTitleTextView = textView {
+                                generateViewId()
+                                textSize = 16f
+                                text = "E-mail:"
+                                typeface = Typeface.DEFAULT_BOLD
+                            }.lparams{
+                                below(cellphoneTitleTextView)
+                            }
+                            emailTextView = textView {
+                                generateViewId()
+                                textSize = 16f
+                            }.lparams(matchParent) {
+                                below(cellphoneTitleTextView)
+                                rightOf(emailTitleTextView)
+                                marginStart = dip(5)
+                            }
+                        }
                     }.lparams{
-                        below(nameTitleTextView)
+                        margin = dip(10)
                     }
-                    crmTextView = textView {
+                    //endregion
+
+                    agreement = floatingEditText {
                         generateViewId()
-                        textSize = 16f
+                        setLabel("Convênio.")
                     }.lparams(matchParent){
-                        rightOf(crmTitleTextView)
-                        below(nameTitleTextView)
-                        bottomMargin = dip(5)
-                        marginStart = dip(5)
+                        below(doctorCardView)
+                        marginStart = dip(20)
+                        marginEnd = dip(20)
                     }
 
-                    streetTitleTextView = textView {
+                    dateAppointment = floatingEditText {
                         generateViewId()
-                        textSize = 16f
-                        text = "Endereço:"
-                        typeface = Typeface.DEFAULT_BOLD
-                    }.lparams{
-                        below(crmTitleTextView)
-                    }
-                    streetTextView = textView {
-                        generateViewId()
-                        textSize = 16f
+                        setLabel("Data da consulta.")
+                        field.isFocusable = false
+                        field.isClickable = true
                     }.lparams(matchParent){
-                        below(crmTitleTextView)
-                        rightOf(streetTitleTextView)
-                        bottomMargin = dip(5)
-                        marginStart = dip(5)
+                        below(agreement)
+                        marginStart = dip(20)
+                        marginEnd = dip(20)
                     }
 
-                    phoneTitleTextView = textView{
+                    hoursRecyclerView = recyclerView {
                         generateViewId()
-                        textSize = 16f
-                        text = "Telefone:"
-                        typeface = Typeface.DEFAULT_BOLD
-                    }.lparams{
-                        below(streetTitleTextView)
-                    }
-                    phoneTextView = textView {
-                        generateViewId()
-                        textSize = 16f
-                    }.lparams(matchParent){
-                        below(streetTitleTextView)
-                        rightOf(phoneTitleTextView)
-                        bottomMargin = dip(5)
-                        marginStart = dip(5)
+                    }.lparams(matchParent, dip(400)){
+                        below(dateAppointment)
                     }
 
-                    cellphoneTitleTextView = textView {
+                    doneButton = button {
                         generateViewId()
-                        textSize = 16f
-                        text = "Celular:"
-                        typeface = Typeface.DEFAULT_BOLD
-                    }.lparams{
-                        below(phoneTitleTextView)
-                    }
-                    cellphoneTextView = textView {
-                        generateViewId()
-                        textSize = 16f
+                        text = "Realizar agendamento da consulta"
                     }.lparams(matchParent){
-                        below(phoneTitleTextView)
-                        rightOf(cellphoneTitleTextView)
-                        bottomMargin = dip(5)
-                        marginStart = dip(5)
-                    }
-
-                    emailTitleTextView = textView {
-                        generateViewId()
-                        textSize = 16f
-                        text = "E-mail:"
-                        typeface = Typeface.DEFAULT_BOLD
-                    }.lparams{
-                        below(cellphoneTitleTextView)
-                    }
-                    emailTextView = textView {
-                        generateViewId()
-                        textSize = 16f
-                    }.lparams(matchParent) {
-                        below(cellphoneTitleTextView)
-                        rightOf(emailTitleTextView)
-                        marginStart = dip(5)
+                        below(hoursRecyclerView)
+                        alignParentBottom()
                     }
                 }
             }.lparams{
                 below(actionBar)
-                margin = dip(10)
-            }
-
-            agreement = floatingEditText {
-                generateViewId()
-                setLabel("Convênio.")
-            }.lparams(matchParent){
-                below(doctorCardView)
-            }
-
-            dateAppointment = floatingEditText {
-                generateViewId() 
-                setLabel("Dia da consulta.")
-            }.lparams(matchParent){
-                below(agreement)
-            }
-
-            hoursRecyclerView = recyclerView {
-                generateViewId()
-            }.lparams(matchParent, dip(400)){
-                below(dateAppointment)
-            }
-
-            doneButton = button {
-                generateViewId()
-                text = "Realizar agendamento da consulta"
-            }.lparams(matchParent){
-                below(hoursRecyclerView)
             }
         }
     }
